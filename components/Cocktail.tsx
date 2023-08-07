@@ -1,17 +1,16 @@
 import React from "react";
-import Drink from "./Interfaces/Drink";
+import  CocktailType from "../store/types/cocktail"; 
 
 interface CocktailProps {
-  data: Drink;
+  data: CocktailType;
   ingredients: string[];
 }
 
 const Cocktail: React.FC<CocktailProps> = function ({ data, ingredients }) {
   const ingredientComponents: React.ReactNode[] = [];
 
-  for (let i = 1; i <= 4; i++) {
-    const ingredientKey = `strIngredient${i}` as keyof Drink;
-    const ingredientValue = data[ingredientKey];
+  for (let i = 0; i < data.ingredients.length; i++) {
+    const ingredientValue = data.ingredients[i];
 
     const Ingredient: React.FC = () => {
       if (ingredientValue !== null) {
@@ -26,20 +25,19 @@ const Cocktail: React.FC<CocktailProps> = function ({ data, ingredients }) {
         ) {
           return <p className="font-bold">{ingredientValue}</p>;
         } else {
-          console.log(ingredients);
           return <p>{ingredientValue}</p>;
         }
       } else {
-        return null; 
+        return null;
       }
     };
 
-    ingredientComponents.push(<Ingredient key={ingredientKey} />);
+    ingredientComponents.push(<Ingredient key={i} />);
   }
 
   return (
     <div className="flex mb-4">
-      <p className="flex-none w-40 mr-4 h-16">{data.strDrink}</p>
+      <p className="flex-none w-40 mr-4 h-16">{data.label}</p>
       <div className="flex-col">{ingredientComponents}</div>
     </div>
   );

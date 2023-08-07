@@ -1,23 +1,22 @@
-import Cocktail from "./Cocktail"
-import Drink from "./Interfaces/Drink"
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store"; // Passe den Pfad an
+import Cocktail from "./Cocktail";
 
-interface CocktailListProps {
-    data: Drink[];
-    ingredients: string[]
-}
+interface CocktailListProps {}
 
-const CocktailList: React.FC <CocktailListProps> = function({ data, ingredients }){
+const CocktailList: React.FC<CocktailListProps> = function () {
+  const ingredients = useSelector((state: RootState) => state.ingredients.data); // Hole die Zutaten aus dem Redux Store
+  const cocktails = useSelector((state: RootState) => state.cocktails.data);
 
-    const ListOfCocktails = data.map((item: Drink, index:number)=>{
-        
-        return(<div key={index} className="bg-white rounded-md shadow-md p-4 mb-4">
-            <Cocktail  ingredients={ingredients} data={item}></Cocktail>
-        </div>) 
-    })
+  const ListOfCocktails = cocktails.map((item, index) => {
+    return (
+      <div key={index} className="bg-white rounded-md shadow-md p-4 mb-4">
+        <Cocktail ingredients={ingredients} data={item}></Cocktail>
+      </div>
+    );
+  });
 
-    return <div>
-        {ListOfCocktails}
-    </div>
-}
+  return <div>{ListOfCocktails}</div>;
+};
 
 export default CocktailList;

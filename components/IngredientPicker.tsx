@@ -1,15 +1,14 @@
-import { useState, FormEvent, ChangeEvent, ReactNode } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addIngredient } from "../store/slices/ingredientSlice"; 
+import { RootState } from "../store/store"; 
 
-interface IngredientPickerProps {
-  ingredients: string[];
-  setIngredients: React.Dispatch<React.SetStateAction<string[]>>;
-}
+interface IngredientPickerProps {}
 
-const IngredientPicker: React.FC<IngredientPickerProps> = ({
-  ingredients,
-  setIngredients,
-}) => {
+const IngredientPicker: React.FC<IngredientPickerProps> = () => {
   const [inputIngredient, setInputIngredient] = useState<string>("");
+  const dispatch = useDispatch();
+  const ingredients = useSelector((state: RootState) => state.ingredients.data);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputIngredient(event.target.value);
@@ -17,14 +16,11 @@ const IngredientPicker: React.FC<IngredientPickerProps> = ({
 
   const handleClick = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    setIngredients((prevIngredients: string[]) => [
-      ...prevIngredients,
-      inputIngredient,
-    ]);
+    dispatch(addIngredient(inputIngredient));
     setInputIngredient("");
   };
 
-  const listOfIngredients: ReactNode = ingredients.map((ingredient: string) => (
+  const listOfIngredients = ingredients.map((ingredient: string) => (
     <div key={ingredient}>{ingredient}</div>
   ));
 

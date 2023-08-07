@@ -5,28 +5,28 @@
   align-items: baseline;
   padding: 1rem 10%;
   height: 5rem;
-  background-color: #3d3529;
+  background-color: #e0edec;
 }
 
 .logo {
   font-size: 1.5rem;
-  color: rgb(176, 121, 121);
+  color: #1c2522;
   font-family: 'Fira', sans-serif;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #f2ffe1;
+  color: #1c2522;
 }
 
 .logo a {
   text-decoration: none;
-  color: #f2ffe1;
+  color: #1c2522;
 }
 
 .navigation a {
   text-decoration: none;
-  color: #f2ffe1;
+  color: #1c2522;
   font-size: 1rem;
 }
 

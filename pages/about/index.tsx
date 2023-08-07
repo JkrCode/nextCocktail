@@ -1,8 +1,14 @@
-
+import { Fragment } from "react";
 
 function aboutPage(){
     return(
-        <h2>Hello from aboutPage</h2>
+        <Fragment>
+            <div className="">
+
+            </div>
+            <h2>Hello from aboutPage</h2>
+        </Fragment>
+        
     )
 }
 

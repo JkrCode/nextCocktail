@@ -1,21 +1,44 @@
 import axios from "axios";
 import IngredientPicker from "../components/IngredientPicker";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import CocktailList from "../components/CocktailList";
-import Drink from "../components/Interfaces/Drink";
 import Head from "next/head";
+import { useDispatch } from "react-redux";
+import { addCocktail } from "@/store/store";
 
 function App() {
-
-const [drinks, setDrinks] = useState<Drink[]>([]);
-
-const [ingredients, setIngredients] = useState<string[]>([]);
+  const dispatch = useDispatch();
 
 
-async function handleClick () {
-  const data = await axios.get('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita');
-  setDrinks(data.data.drinks);
-}
+  async function handleClick() {
+    try {
+      const response = await axios.get('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita');
+      const data = response.data.drinks; 
+    
+      // Füge jeden Cocktail dem Store hinzu
+      data.forEach((cocktail:any) => {
+        const ingredients = [
+          cocktail.strIngredient1,
+          cocktail.strIngredient2,
+          cocktail.strIngredient3,
+          cocktail.strIngredient4,
+        ].filter(Boolean); 
+        
+        dispatch(
+          addCocktail({
+            label: cocktail.strDrink,
+            type: cocktail.strCategory,
+            id: cocktail.idDrink,
+            collapsed: true,
+            ingredients, 
+          })
+        );
+      });
+    } catch (error) {
+      console.error('Error fetching cocktails:', error);
+    }
+  }
+  
 
   
   return (
@@ -30,14 +53,11 @@ async function handleClick () {
       <div className="container mx-auto my-8">
         <h4 className="italic font-bold mb-4 text-center">Enter Ingredient</h4>
         <div className="flex justify-center">
-          <IngredientPicker
-            ingredients={ingredients}
-            setIngredients={setIngredients}
-          />
+          <IngredientPicker/>
         </div>
         <div className="flex justify-center">
           <div className="w-2/5">
-            <CocktailList ingredients={ingredients} data={drinks} />
+            <CocktailList/>
           </div>
         </div>
         <div className="flex justify-center mt-4">
